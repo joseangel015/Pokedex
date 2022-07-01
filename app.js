@@ -7,24 +7,24 @@ fetch('data/lol-champions.json')
 .then(response => response.json())
 .then(data => {
     campeones = data;
-    render(campeones);
-    // console.log(data)
+    render(campeones,false);
 });
 
 //Imprimir en las tarjetas
-function render(campeones){
+function render(campeones,btnDelete){
     result.innerHTML = "";
     for(var i in campeones){
+        
         let column = document.createElement("div");
         column.classList.add("col-3")
 
+        //Agregar botón de favoritos
         let button = document.createElement("button");
         button.innerHTML="Agregar a favorito";
         button.classList.add("btn","mt-3", "btn-warning");
         button.setAttribute("data-number",campeones[i].key);
         button.setAttribute("data-nombre",campeones[i].name);
         button.setAttribute("data-index",i);
-        //button.dataset.id=campeones[i].number;
         button.addEventListener("click",function(evt){
             let miboton = evt.target;
             let name = miboton.dataset.nombre;
@@ -39,18 +39,55 @@ function render(campeones){
             }
 
             if(aux_favoritos.length<=0){
-                //Si ya existe en el arreglo
+                //Si no existe en el arreglo
                 favoritos.push(campeones[index]);
                 let f = JSON.stringify(favoritos);
                 localStorage.setItem("favoritosStorage", f);
-
-
                 alert(`El campeón ${name} se ha agregado a favoritos`);
             }else{
                 alert(`El campeón ${name} ya estaba en la lista`);
             }
 
         });
+
+        //Eliminar de favoritos
+        let buttonDelete;
+        if(btnDelete===true){
+            buttonDelete = document.createElement("button");
+            buttonDelete.innerHTML="Eliminar de favorito";
+            buttonDelete.classList.add("btn","mt-3", "btn-danger");
+            buttonDelete.setAttribute("data-number",campeones[i].key);
+            buttonDelete.setAttribute("data-nombre",campeones[i].name);
+            buttonDelete.setAttribute("data-index",i);
+            buttonDelete.addEventListener("click",function(evt){
+                let miboton = evt.target;
+                let name = miboton.dataset.nombre;
+                let num = miboton.dataset.number;
+                let index = miboton.dataset.index;
+                let aux_favoritos =[];
+    
+                if(favoritos.length>0){         
+                    aux_favoritos = favoritos.filter(function(favorito){
+                        return favorito.key === num;
+                    });
+                }
+                if(aux_favoritos.length>0){
+                    //Si no existe en el arreglo
+                    console.log(aux_favoritos.name)
+                    // let position = favoritos.find(aux_favoritos);
+                    const champToDelete = (campeon)=>campeon.name == aux_favoritos.name;
+                    let position = favoritos.findIndex(champToDelete);   
+                    console.log(favoritos)
+                    favoritos.splice(index,1);
+                    let f = JSON.stringify(favoritos);
+                    localStorage.setItem("favoritosStorage", f);
+                    alert(`El campeón ${name} se ha eliminado de Favoritos`);
+                }else{
+                    alert(`El campeón ${name} no estaba en la lista`);
+                }
+    
+            });
+        }
 
 
         let card = `<div class="card mt-4">
@@ -87,6 +124,10 @@ function render(campeones){
 
         column.innerHTML=card;
         column.appendChild(button);
+        if(btnDelete===true){
+            column.appendChild(buttonDelete);
+        }
+        
 
         result.append(column);
     }
@@ -137,7 +178,7 @@ buttonDescNum.addEventListener("click",orderNumDesc)
 buttonFavoritos.addEventListener("click",listFavs)
 
 function listFavs(){
-    render(favoritos);
+    render(favoritos,true);
 }
 
 //Ordernar ascendente por ID
@@ -145,7 +186,7 @@ function reiniciar(){
     campeones.sort(function(campeon1,campeon2){
         return campeon1.key - campeon2.key;
     });
-    render(campeones);
+    render(campeones,false);
 }
 
 //Ordenar descendente por ID
@@ -153,7 +194,7 @@ function orderNumDesc(){
     campeones.sort(function(campeon1,campeon2){
       return campeon2.key - campeon1.key;
     });
-    render(campeones);
+    render(campeones,false);
 }
 
 //Ordenar A-Z
@@ -165,7 +206,7 @@ function orderAsc(){
             return -1; //Si empieza con una letra menor enviala a la izquierda -1
         }
     });
-    render(campeones);
+    render(campeones,false);
 }
 
 //Ordendar Z-A
@@ -177,7 +218,7 @@ function orderDesc(){
             return -1; 
         }
     });
-    render(campeones);
+    render(campeones,false);
 }
 
 function search(e){
@@ -187,7 +228,7 @@ function search(e){
     let campeonesFiltrados = campeones.filter(function(campeon){
         return campeon.name.toLowerCase().includes(s.toLowerCase());
     });
-    render(campeonesFiltrados);
+    render(campeonesFiltrados,false);
 }
 
 
@@ -197,7 +238,7 @@ function searchByType(e){
     let campeonesFiltrados = campeones.filter(function(camepon){
         return camepon.tags.includes(t);
     });
-    render(campeonesFiltrados);
+    render(campeonesFiltrados,false);
 }
 
 
