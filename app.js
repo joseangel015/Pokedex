@@ -19,47 +19,16 @@ function render(campeones,btnDelete){
         column.classList.add("col-3")
 
         //Agregar botón de favoritos
+        
         let button = document.createElement("button");
-        button.innerHTML="Agregar a favorito";
-        button.classList.add("btn","mt-3", "btn-warning");
         button.setAttribute("data-number",campeones[i].key);
         button.setAttribute("data-nombre",campeones[i].name);
         button.setAttribute("data-index",i);
-        button.addEventListener("click",function(evt){
-            let miboton = evt.target;
-            let name = miboton.dataset.nombre;
-            let num = miboton.dataset.number;
-            let index = miboton.dataset.index;
-            let aux_favoritos =[];
 
-            if(favoritos.length>0){            
-                aux_favoritos = favoritos.filter(function(favorito){
-                    return favorito.key === num;
-                });
-            }
-
-            if(aux_favoritos.length<=0){
-                //Si no existe en el arreglo
-                favoritos.push(campeones[index]);
-                let f = JSON.stringify(favoritos);
-                localStorage.setItem("favoritosStorage", f);
-                alert(`El campeón ${name} se ha agregado a favoritos`);
-            }else{
-                alert(`El campeón ${name} ya estaba en la lista`);
-            }
-
-        });
-
-        //Eliminar de favoritos
-        let buttonDelete;
-        if(btnDelete===true){
-            buttonDelete = document.createElement("button");
-            buttonDelete.innerHTML="Eliminar de favorito";
-            buttonDelete.classList.add("btn","mt-3", "btn-danger");
-            buttonDelete.setAttribute("data-number",campeones[i].key);
-            buttonDelete.setAttribute("data-nombre",campeones[i].name);
-            buttonDelete.setAttribute("data-index",i);
-            buttonDelete.addEventListener("click",function(evt){
+        if(btnDelete === true){ //Botón eliminar
+            button.innerHTML="Eliminar de favorito";
+            button.classList.add("btn","mt-3", "btn-danger");
+            button.addEventListener("click",function(evt){
                 let miboton = evt.target;
                 let name = miboton.dataset.nombre;
                 let num = miboton.dataset.number;
@@ -72,22 +41,47 @@ function render(campeones,btnDelete){
                     });
                 }
                 if(aux_favoritos.length>0){
-                    //Si no existe en el arreglo
-                    console.log(aux_favoritos.name)
-                    // let position = favoritos.find(aux_favoritos);
-                    const champToDelete = (campeon)=>campeon.name == aux_favoritos.name;
-                    let position = favoritos.findIndex(champToDelete);   
-                    console.log(favoritos)
                     favoritos.splice(index,1);
                     let f = JSON.stringify(favoritos);
                     localStorage.setItem("favoritosStorage", f);
                     alert(`El campeón ${name} se ha eliminado de Favoritos`);
+                    listFavs();
                 }else{
                     alert(`El campeón ${name} no estaba en la lista`);
                 }
     
             });
+        }else{
+            //Botón de favoritos
+            button.innerHTML="Agregar a favorito";
+            button.classList.add("btn","mt-3", "btn-warning");
+            button.addEventListener("click",function(evt){
+                let miboton = evt.target;
+                let name = miboton.dataset.nombre;
+                let num = miboton.dataset.number;
+                let index = miboton.dataset.index;
+                let aux_favoritos =[];
+    
+                if(favoritos.length>0){            
+                    aux_favoritos = favoritos.filter(function(favorito){
+                        return favorito.key === num;
+                    });
+                }
+    
+                if(aux_favoritos.length<=0){
+                    //Si no existe en el arreglo
+                    favoritos.push(campeones[index]);
+                    let f = JSON.stringify(favoritos);
+                    localStorage.setItem("favoritosStorage", f);
+                    alert(`El campeón ${name} se ha agregado a favoritos`);
+                }else{
+                    alert(`El campeón ${name} ya estaba en la lista`);
+                }
+    
+            });
+
         }
+        
 
 
         let card = `<div class="card mt-4">
@@ -124,13 +118,9 @@ function render(campeones,btnDelete){
 
         column.innerHTML=card;
         column.appendChild(button);
-        if(btnDelete===true){
-            column.appendChild(buttonDelete);
-        }
-        
-
         result.append(column);
     }
+    
 }
 
 
