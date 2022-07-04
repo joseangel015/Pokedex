@@ -1,4 +1,48 @@
+:root{
+    --bg-color: #000000;
+    --bg-color-2: #0f131f;
+    --bg-color-3: #1f273c;
+    --bg-color-4: #323c5c;
+    --bg-color5: #49527f;
+    --text-color-white: #ffffff;
+    --text-color-golden: #c6923c; 
+    --text-font-league: 'League Gothic', sans-serif;
+}
+body{
+    background: linear-gradient(to bottom, var(--bg-color-2), var(--bg-color5));  
+}
+header{
+    padding: 1rem 0 1rem 0;
+}
+h1{
+    text-align: center;
+    color: var(--text-color-golden);
+    font-family: var(--text-font-league);
+    font-size: 6rem;
+}
+.offcanvas-header h5{
+    text-align: center;
+    color: var(--text-color-golden);
+}
 .center-img{
     width: 70%;
     margin:2rem;
+}
+.box-shadow{
+    box-shadow: -2px 2px 22px -3px rgba(0,0,0,0.75);
+    -webkit-box-shadow: -2px 2px 22px -3px rgba(0,0,0,0.75);
+    -moz-box-shadow: -2px 2px 22px -3px rgba(0,0,0,0.75);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 5rem auto 5rem auto;
+    background-color: var(--bg-color-3);
+}
+.bg-canvas{
+    background: linear-gradient(to bottom, var(--bg-color-2), var(--bg-color-3));  
+}
+.canvas-text{
+    color: var(--text-color-golden);
+    border: 1px solid var(--text-color-golden);
+    padding: 1rem;
+    border-radius: 0.5rem;
 }

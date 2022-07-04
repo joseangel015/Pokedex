@@ -16,9 +16,7 @@ function render(campeones,btnDelete){
     for(var i in campeones){
         
         let column = document.createElement("div");
-        column.classList.add("col-3")
-
-        //Agregar botón de favoritos
+        column.classList.add("col-3");
         
         let button = document.createElement("button");
         button.setAttribute("data-number",campeones[i].key);
@@ -69,7 +67,6 @@ function render(campeones,btnDelete){
                 }
     
                 if(aux_favoritos.length<=0){
-                    //Si no existe en el arreglo
                     favoritos.push(campeones[index]);
                     let f = JSON.stringify(favoritos);
                     localStorage.setItem("favoritosStorage", f);
@@ -92,18 +89,18 @@ function render(campeones,btnDelete){
 
                     <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample${i}" aria-controls="offcanvasExample">+</button>
 
-                    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample${i}" aria-labelledby="offcanvasExampleLabel">
-                    <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasExampleLabel">${campeones[i].name}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body">
-                        <img data-number="${campeones[i].key}" src="${campeones[i].icon}" loading="lazy" class="center-img" >
-                        <div>
-                        ${campeones[i].description}
+                    <div class="offcanvas offcanvas-start bg-canvas" tabindex="-1" id="offcanvasExample${i}" aria-labelledby="offcanvasExampleLabel">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">${campeones[i].name} - ${campeones[i].title}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-                    </div>
-                </div>`;
+                        <div class="offcanvas-body">
+                            <img data-number="${campeones[i].key}" src="${campeones[i].icon}" loading="lazy" class="center-img" >
+                            <div class="canvas-text">
+                            ${campeones[i].description}
+                            </div>
+                        </div>
+                    </div>`;
 
             let tipos = campeones[i].tags;
 
@@ -191,9 +188,9 @@ function orderNumDesc(){
 function orderAsc(){
     campeones.sort(function(camepon1,camepon2){
         if(camepon1.name > camepon2.name){
-            return 1; //Si empieza con una letra mayor enviala a la derecha +1
+            return 1; 
         }else{
-            return -1; //Si empieza con una letra menor enviala a la izquierda -1
+            return -1; 
         }
     });
     render(campeones,false);
@@ -211,6 +208,7 @@ function orderDesc(){
     render(campeones,false);
 }
 
+//Buscar por nombre
 function search(e){
     e.preventDefault();
     reiniciar(); 
@@ -221,7 +219,7 @@ function search(e){
     render(campeonesFiltrados,false);
 }
 
-
+//Buscar por tipo
 function searchByType(e){
     let t = e.target.value;
     console.log(t);
